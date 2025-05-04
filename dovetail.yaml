@@ -1,0 +1,7 @@
+dev.push:
+  run:
+    - cargo build
+    - cargo test
+    - git add -A
+    - git commit -S
+    - git push

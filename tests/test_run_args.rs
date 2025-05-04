@@ -5,19 +5,17 @@ use test_helpers::run_dovetail_command;
 
 const SAMPLE_YAML : &str = "
 dev:
-  key: value
-
-staging:
-  key: value
+  run:
+    - echo Hello World
 ";
 
 #[test]
-fn test_show_command() {
+fn test_run_auto_command() {
     let dir = tempdir().unwrap();
     let yaml_path = dir.path().join("dovetail.yaml");
     write(&yaml_path, SAMPLE_YAML).unwrap();
 
-    let output = run_dovetail_command(&["show"], &dir);
+    let output = run_dovetail_command(&["run", "dev", "-y"], &dir);
 
     if !output.status.success() {
         eprintln!("STDOUT:\n{}", String::from_utf8_lossy(&output.stdout));
@@ -26,16 +24,17 @@ fn test_show_command() {
 
     assert!(output.status.success());
     let stdout = std::str::from_utf8(&output.stdout).unwrap();
-    assert!(stdout.contains(SAMPLE_YAML));
+    assert!(stdout.contains("The following commands will be run in 'dev'"));
+    assert!(stdout.contains("echo Hello World"));
 }
 
 #[test]
-fn test_show_environment_command() {
+fn test_run_prompt_command() {
     let dir = tempdir().unwrap();
     let yaml_path = dir.path().join("dovetail.yaml");
     write(&yaml_path, SAMPLE_YAML).unwrap();
 
-    let output = run_dovetail_command(&["show", "dev"], &dir);
+    let output = run_dovetail_command(&["run", "dev"], &dir);
 
     if !output.status.success() {
         eprintln!("STDOUT:\n{}", String::from_utf8_lossy(&output.stdout));
@@ -44,6 +43,5 @@ fn test_show_environment_command() {
 
     assert!(output.status.success());
     let stdout = std::str::from_utf8(&output.stdout).unwrap();
-    assert!(stdout.contains("dev"));
-    assert!(!stdout.contains("staging"));
+    assert!(stdout.contains("y/N"));
 }

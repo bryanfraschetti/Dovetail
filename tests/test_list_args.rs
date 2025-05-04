@@ -4,11 +4,19 @@ use tempfile::tempdir;
 mod test_helpers;
 use test_helpers::run_dovetail_command;
 
+const SAMPLE_YAML : &str = "
+dev:
+  key: value
+
+staging:
+  key: value
+";
+
 #[test]
 fn test_list_command() {
     let dir = tempdir().unwrap();
-    let ini_path = dir.path().join("dovetail.ini");
-    write(&ini_path, "[dev]\nkey = value").unwrap();
+    let yaml_path = dir.path().join("dovetail.yaml");
+    write(&yaml_path, SAMPLE_YAML).unwrap();
 
     let output = run_dovetail_command(&["list"], &dir);
 
@@ -20,4 +28,5 @@ fn test_list_command() {
     assert!(output.status.success());
     let stdout = std::str::from_utf8(&output.stdout).unwrap();
     assert!(stdout.contains("dev"));
+    assert!(stdout.contains("staging"));
 }
