@@ -1,0 +1,18 @@
+name: dovetail
+base: core24
+version: '0.1'
+summary:   Dovetail is a project-agnostic user-extensible workflow manager
+description: |
+  Manage workflows, environments, packaging, releases, deployment, and distribution centrally
+grade: devel
+confinement: devmode
+
+apps:
+  dovetail:
+    command: bin/dovetail
+
+parts:
+  dovetail:
+    plugin: rust
+    source: .
+
