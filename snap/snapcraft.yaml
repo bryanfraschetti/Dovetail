@@ -5,7 +5,7 @@ summary:   Dovetail is a project-agnostic user-extensible workflow manager
 description: |
   Manage workflows, environments, packaging, releases, deployment, and distribution centrally
 grade: devel
-confinement: devmode
+confinement: classic
 
 apps:
   dovetail:
