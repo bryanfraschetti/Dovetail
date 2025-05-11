@@ -1,4 +1,4 @@
-dev.push:
+dev.push:  
   run:
     - cargo build
     - cargo test
