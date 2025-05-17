@@ -2,7 +2,7 @@ use clap::{arg, Arg, Command};
 use serde_yaml::Value;
 use std::fs;
 mod subcmds;
-use subcmds::{show, list, run};
+use subcmds::{show, list, run, release};
 
 fn main() {
     let cmd = Command::new("dovetail")
@@ -22,6 +22,19 @@ fn main() {
             Command::new("run")
                 .about("Executes the run section of an environment")
                 .arg(arg!(<ENVIRONMENT> "The name of the environment"))
+                .arg(
+                    Arg::new("yes")
+                        .short('y')
+                        .long("yes")
+                        .help("Skip confirmation prompt")
+                        .required(false)
+                        .action(clap::ArgAction::SetTrue),
+                ),
+        ).subcommand(
+            Command::new("release")
+                .about("Executes the release section of an environment")
+                .arg(arg!(<ENVIRONMENT> "The name of the environment"))
+                .arg(arg!(<PLATFORM> "The name of the release platform"))
                 .arg(
                     Arg::new("yes")
                         .short('y')
@@ -62,6 +75,12 @@ fn main() {
             let env = run_matches.get_one::<String>("ENVIRONMENT").unwrap();
             let skip_prompt = run_matches.get_flag("yes");
             run::run(&yaml, env, skip_prompt);
+        }
+        Some(("release", release_matches)) => {
+            let env = release_matches.get_one::<String>("ENVIRONMENT").unwrap();
+            let platform = release_matches.get_one::<String>("PLATFORM").unwrap();
+            let skip_prompt = release_matches.get_flag("yes");
+            release::release(&yaml, env, platform, skip_prompt);
         }
         _ => {} // No need for this case because of arg_required_else_help
     }

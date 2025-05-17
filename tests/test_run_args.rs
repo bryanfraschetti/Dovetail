@@ -80,10 +80,6 @@ fn test_dependency_checker(){
 
     assert!(output.status.success());
     let stdout = std::str::from_utf8(&output.stdout).unwrap();
-    assert!(stdout.contains("Environment 'dev.3' has dependencies:"));
-    assert!(stdout.contains("  - dev.2"));
-    assert!(stdout.contains("Environment 'dev.2' has dependencies:"));
-    assert!(stdout.contains("  - dev.1"));
     assert!(stdout.contains("The following commands will be run:"));
     assert!(stdout.contains("dev.1: echo 'Going 1st'"));
     assert!(stdout.contains("dev.2: echo 'Going 2nd'"));

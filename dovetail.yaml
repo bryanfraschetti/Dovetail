@@ -1,7 +1,18 @@
-dev.push:  
+dev.test:
   run:
     - cargo build
     - cargo test
-    - git add -A
-    - git commit -S
-    - git push
+
+dev:
+  release:
+    git:
+      depends:
+        - dev.test
+      run:
+        - git add -A
+        - git commit -S
+        - git push
+
+    snap:
+      run:
+        - snapcraft
