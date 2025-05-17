@@ -1,0 +1,24 @@
+dovetail (0.1.0-4) noble; urgency=medium
+
+  * d/c: Attempting to fix build environment variables in LP
+
+ -- Bryan Fraschetti <bryan.fraschetti@canonical.com>  Sat, 17 May 2025 17:30:10 +0200
+
+dovetail (0.1.0-3) noble; urgency=medium
+
+  * Corrected Section in control
+
+ -- Bryan Fraschetti <bryan.fraschetti@canonical.com>  Sat, 17 May 2025 15:59:30 +0200
+
+dovetail (0.1.0-2) noble; urgency=medium
+
+  * Corrected release capitalization
+
+ -- Bryan Fraschetti <bryan.fraschetti@canonical.com>  Sat, 17 May 2025 15:57:30 +0200
+
+dovetail (0.1.0-1) Noble; urgency=medium
+
+  * Initial release. Currently supports the following subcommands: list,
+    show [<env>], run <env>, release <env> <platform>
+
+ -- Bryan Fraschetti <bryan.fraschetti@canonical.com>  Sat, 17 May 2025 15:54:33 +0200

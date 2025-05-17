@@ -1,0 +1,7 @@
+Features to add:
+  - A `-f / --file` flag that will allow users to supply a file named something other than dovetail.yaml as an argument
+  - Add the ability to provide custom variables as arguments which will populate templated cmds in the yaml
+  - Start adding branches for the different releases and stuff (like noble, jammy debs, and maybe the snaps as well)
+  - Add rust linting
+  - Add environment variables
+  - Add color coded output / improve it generally

@@ -16,3 +16,10 @@ dev:
     snap:
       run:
         - snapcraft
+    
+    debian:
+      run:
+        - debclean
+        - tar --exclude-vcs --exclude=.gitignore --exclude=.github --exclude=target --exclude=snap --exclude=debian -cvJf ../dovetail_0.1.0.orig.tar.xz .
+        - dpkg-buildpackage -ui -S -sa -k5A93D31B99D80FBFE7A97F8665EFA24128E424B3
+        - dput ppa:bryanfraschetti/dovetail ../dovetail_0.1.0-4_source.changes
