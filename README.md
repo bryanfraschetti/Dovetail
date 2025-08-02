@@ -8,3 +8,4 @@ Dovetail is a workflow manager designed to streamline the management of tasks ac
 - Declarative Setup: Define your workflow in a consistent and declarative manner, making it easy to set up, tear down, and reproduce environments.
 - Extensibility: Dovetail is designed to be fully extensible, allowing you to define custom environments and actions according to your project's needs.
 
+Debian package available in a PPA here: https://launchpad.net/~bryanfraschetti/+archive/ubuntu/dovetail
