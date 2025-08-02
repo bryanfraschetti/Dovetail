@@ -5,7 +5,7 @@ use std::io::{self, Write};
 
 pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool){
     if commands.is_empty() {
-        eprintln!("No commands to run.");
+        //eprintln!("No commands to run.");
         return;
     }
 

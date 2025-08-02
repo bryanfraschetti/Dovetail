@@ -1,3 +1,11 @@
+dovetail (0.1.1-0) noble; urgency=medium
+
+  * d/r: Fixing build rules
+
+  * dovetail.yaml: Fixing environment commands
+
+ -- Bryan Fraschetti <bryan.fraschetti@canonical.com>  Sat, 02 Aug 2025 17:53:30 -0400
+
 dovetail (0.1.0-4) noble; urgency=medium
 
   * d/c: Attempting to fix build environment variables in LP

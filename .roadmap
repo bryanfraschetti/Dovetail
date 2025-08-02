@@ -5,3 +5,4 @@ Features to add:
   - Add rust linting
   - Add environment variables
   - Add color coded output / improve it generally
+  - Maybe add a clean command

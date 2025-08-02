@@ -17,9 +17,22 @@ dev:
       run:
         - snapcraft
     
-    debian:
+    debian.point-release:
       run:
         - debclean
-        - tar --exclude-vcs --exclude=.gitignore --exclude=.github --exclude=target --exclude=snap --exclude=debian -cvJf ../dovetail_0.1.0.orig.tar.xz .
-        - dpkg-buildpackage -ui -S -sa -k5A93D31B99D80FBFE7A97F8665EFA24128E424B3
-        - dput ppa:bryanfraschetti/dovetail ../dovetail_0.1.0-4_source.changes
+        - tar --exclude-vcs --exclude=.gitignore --exclude=.github --exclude=target --exclude=snap --exclude=debian -cvJf ../dovetail_$(dpkg-parsechangelog --show-field Version | cut -d- -f1).orig.tar.xz .
+        - debuild -S -sa -k5A93D31B99D80FBFE7A97F8665EFA24128E424B3
+        - dput ppa:bryanfraschetti/dovetail ../dovetail_$(dpkg-parsechangelog --show-field Version)_source.changes
+
+    debian.patch:
+      run:
+        - debclean
+        - tar --exclude-vcs --exclude=.gitignore --exclude=.github --exclude=target --exclude=snap --exclude=debian -cvJf ../dovetail_$(dpkg-parsechangelog --show-field Version | cut -d- -f1).orig.tar.xz .
+        - debuild -S -k5A93D31B99D80FBFE7A97F8665EFA24128E424B3
+        - dput ppa:bryanfraschetti/dovetail ../dovetail_$(dpkg-parsechangelog --show-field Version)_source.changes
+
+clean:
+  run:
+    - rm ../dovetail_*
+    - cargo clean
+    - rm dovetail*snap
