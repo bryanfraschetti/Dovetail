@@ -2,16 +2,17 @@ use std::process;
 use serde_yaml::Value;
 use std::collections::HashSet;
 use std::io::{self, Write};
+use colored::*;
 
 pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool){
     if commands.is_empty() {
-        //eprintln!("No commands to run.");
+        // eprintln!("No commands to run.");
         return;
     }
 
     println!("The following commands will be run:");
     for (env, cmd) in &commands {
-        println!("{}: {}", env, cmd);
+        println!("{}: {}", env.green(), cmd);
     }
 
     if !skip_prompt {
@@ -27,17 +28,18 @@ pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool){
     }
 
     for (env, cmd) in commands {
-        println!("Running in {}: {}", env, cmd);
+        println!("\n{}: {}", env.green(), cmd);
         let status = process::Command::new("bash")
             .arg("-c")
             .arg(&cmd)
             .status();
 
+        print!("\n");
         match status {
             Ok(s) if s.success() => {}
-            Ok(s) => eprintln!("Command in '{}' exited with status: {}", env, s),
+            Ok(s) => eprintln!("Command {} in '{}' exited with status: {}", cmd.red(), env.red(), s.to_string().red()),
             Err(e) => {
-                eprintln!("Failed to execute '{}': {}", cmd, e);
+                eprintln!("Failed to execute '{}': {}", cmd.red(), e.to_string().red());
                 break;
             }
         }

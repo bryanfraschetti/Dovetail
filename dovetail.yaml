@@ -36,3 +36,9 @@ clean:
     - rm ../dovetail_*
     - cargo clean
     - rm dovetail*snap
+
+install:
+  run:
+    # Doesn't work if which dovetail == /snap/bin/dovetail since the
+    # snap would be running this process
+    - snap install dovetail*snap --dangerous

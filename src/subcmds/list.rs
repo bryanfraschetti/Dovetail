@@ -1,5 +1,6 @@
 // dovetail list
 use serde_yaml::Value;
+use colored::*;
 
 pub fn run(yaml: &Value) {
     match &yaml {
@@ -7,7 +8,7 @@ pub fn run(yaml: &Value) {
             println!("Environments:");
             for (key, _) in map {
                 if let Value::String(env) = key {
-                    println!("{}", env);
+                    println!("{}", env.green());
                 }
             }
         }
