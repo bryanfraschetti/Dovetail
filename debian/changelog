@@ -1,3 +1,11 @@
+dovetail (0.1.2-0) noble; urgency=medium
+
+  * New point release
+
+  * Color coding, better indentation, lint and formatting enforcement
+
+ -- Bryan Fraschetti <bryan.fraschetti@canonical.com>  Thu, 07 Aug 2025 14:07:59 -0400
+
 dovetail (0.1.1-0) noble; urgency=medium
 
   * d/r: Fixing build rules

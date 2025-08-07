@@ -60,7 +60,7 @@ fn test_release_with_nested_dependency() {
 
     assert!(output.status.success());
     let stdout = std::str::from_utf8(&output.stdout).unwrap();
-    println!("{:?}", stdout);
+    println!("{stdout:?}");
     assert!(stdout.contains("The following commands will be run:"));
     assert!(stdout.contains("dev.debuild: echo debuild -us -uc"));
     assert!(stdout.contains("debian: echo dput ppa"));

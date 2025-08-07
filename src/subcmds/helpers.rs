@@ -63,23 +63,20 @@ pub fn collect_dependencies(
     visited.insert(environment.clone());
     let mut ordered_dependencies = Vec::new();
 
-    if let Value::Mapping(map) = &yaml[environment] {
-        if let Some(Value::Sequence(depends)) =
+    if let Value::Mapping(map) = &yaml[environment]
+        && let Some(Value::Sequence(depends)) =
             map.get(Value::String("depends".to_string()))
-        {
-            for dep in depends {
-                if let Value::String(dep_env) = dep {
-                    if !visited.contains(dep_env) {
-                        ordered_dependencies.extend(collect_dependencies(
-                            yaml, dep_env, visited,
-                        ));
-                        ordered_dependencies.push(dep_env.clone());
-                    }
-                }
+    {
+        for dep in depends {
+            if let Value::String(dep_env) = dep
+                && !visited.contains(dep_env)
+            {
+                ordered_dependencies
+                    .extend(collect_dependencies(yaml, dep_env, visited));
+                ordered_dependencies.push(dep_env.clone());
             }
         }
     }
-
     ordered_dependencies
 }
 
@@ -91,14 +88,13 @@ pub fn collect_commands_for_dependencies(
     let mut commands = Vec::new();
 
     for dep in dependencies {
-        if let Value::Mapping(map) = &yaml[dep] {
-            if let Some(Value::Sequence(cmds)) =
+        if let Value::Mapping(map) = &yaml[dep]
+            && let Some(Value::Sequence(cmds)) =
                 map.get(Value::String("run".to_string()))
-            {
-                for cmd in cmds {
-                    if let Value::String(cmd_str) = cmd {
-                        commands.push((dep.clone(), cmd_str.clone()));
-                    }
+        {
+            for cmd in cmds {
+                if let Value::String(cmd_str) = cmd {
+                    commands.push((dep.clone(), cmd_str.clone()));
                 }
             }
         }
