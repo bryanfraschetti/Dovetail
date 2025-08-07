@@ -15,6 +15,14 @@ dev:
         - git commit -S
         - git push
 
+    git.redo:
+      depends:
+        - dev.test
+      run:
+        - git add -A
+        - git commit -S --amend --no-edit
+        - git push --force
+
     snap:
       run:
         - snapcraft

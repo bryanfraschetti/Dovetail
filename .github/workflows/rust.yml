@@ -11,19 +11,25 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Build
       run: cargo build --verbose
 
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
     - name: Run tests
       run: cargo test --verbose
 
-    - name: Run Clippy
-      run: cargo clippy -- -D warnings
-
-    - name: Run Formatter
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check formatting
       run: cargo fmt -- --check
+
+    - name: Clippy lint
+      run: cargo clippy --all-targets --all-features -- -D warnings
