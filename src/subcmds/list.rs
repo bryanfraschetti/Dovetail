@@ -1,6 +1,6 @@
 // dovetail list
-use serde_yaml::Value;
 use colored::*;
+use serde_yaml::Value;
 
 pub fn run(yaml: &Value) {
     match &yaml {

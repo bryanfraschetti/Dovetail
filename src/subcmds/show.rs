@@ -8,7 +8,8 @@ pub fn run(yaml: &Value, environment: Option<&String>) {
         match &yaml[env] {
             Value::Null => eprintln!("Environment '{env}' not found."),
             env_val => {
-                let fragment = serde_yaml::to_string(env_val).expect("Failed to format YAML");
+                let fragment = serde_yaml::to_string(env_val)
+                    .expect("Failed to format YAML");
                 print!("{env}:\n{fragment}");
             }
         }

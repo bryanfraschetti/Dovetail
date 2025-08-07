@@ -3,7 +3,7 @@ use tempfile::tempdir;
 mod test_helpers;
 use test_helpers::run_dovetail_command;
 
-const SAMPLE_YAML : &str = "
+const SAMPLE_YAML: &str = "
 dev:
   release:
     git:
@@ -11,7 +11,7 @@ dev:
         - git push
 ";
 
-const SAMPLE_YAML_DEPENDENCIES : &str = "
+const SAMPLE_YAML_DEPENDENCIES: &str = "
 dev.debuild:
   run:
     - echo debuild -us -uc
@@ -24,7 +24,6 @@ prod:
       run:
         - echo dput ppa
 ";
-
 
 #[test]
 fn test_run_release_command() {
@@ -46,12 +45,13 @@ fn test_run_release_command() {
 }
 
 #[test]
-fn test_release_with_nested_dependency(){
+fn test_release_with_nested_dependency() {
     let dir = tempdir().unwrap();
     let yaml_path = dir.path().join("dovetail.yaml");
     write(&yaml_path, SAMPLE_YAML_DEPENDENCIES).unwrap();
 
-    let output = run_dovetail_command(&["release", "prod", "debian", "-y"], &dir);
+    let output =
+        run_dovetail_command(&["release", "prod", "debian", "-y"], &dir);
 
     if !output.status.success() {
         eprintln!("STDOUT:\n{}", String::from_utf8_lossy(&output.stdout));

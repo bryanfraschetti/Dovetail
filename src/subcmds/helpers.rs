@@ -1,10 +1,10 @@
-use std::process;
+use colored::*;
 use serde_yaml::Value;
 use std::collections::HashSet;
 use std::io::{self, Write};
-use colored::*;
+use std::process;
 
-pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool){
+pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool) {
     if commands.is_empty() {
         // eprintln!("No commands to run.");
         return;
@@ -29,17 +29,22 @@ pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool){
 
     for (env, cmd) in commands {
         println!("\n{}: {}", env.green(), cmd);
-        let status = process::Command::new("bash")
-            .arg("-c")
-            .arg(&cmd)
-            .status();
-
+        let status = process::Command::new("bash").arg("-c").arg(&cmd).status();
         println!();
         match status {
             Ok(s) if s.success() => {}
-            Ok(s) => eprintln!("Command {} in '{}' exited with status: {}", cmd.red(), env.red(), s.to_string().red()),
+            Ok(s) => eprintln!(
+                "Command {} in '{}' exited with status: {}",
+                cmd.red(),
+                env.red(),
+                s.to_string().red()
+            ),
             Err(e) => {
-                eprintln!("Failed to execute '{}': {}", cmd.red(), e.to_string().red());
+                eprintln!(
+                    "Failed to execute '{}': {}",
+                    cmd.red(),
+                    e.to_string().red()
+                );
                 break;
             }
         }
@@ -59,11 +64,15 @@ pub fn collect_dependencies(
     let mut ordered_dependencies = Vec::new();
 
     if let Value::Mapping(map) = &yaml[environment] {
-        if let Some(Value::Sequence(depends)) = map.get(Value::String("depends".to_string())) {
+        if let Some(Value::Sequence(depends)) =
+            map.get(Value::String("depends".to_string()))
+        {
             for dep in depends {
                 if let Value::String(dep_env) = dep {
                     if !visited.contains(dep_env) {
-                        ordered_dependencies.extend(collect_dependencies(yaml, dep_env, visited));
+                        ordered_dependencies.extend(collect_dependencies(
+                            yaml, dep_env, visited,
+                        ));
                         ordered_dependencies.push(dep_env.clone());
                     }
                 }
@@ -83,7 +92,9 @@ pub fn collect_commands_for_dependencies(
 
     for dep in dependencies {
         if let Value::Mapping(map) = &yaml[dep] {
-            if let Some(Value::Sequence(cmds)) = map.get(Value::String("run".to_string())) {
+            if let Some(Value::Sequence(cmds)) =
+                map.get(Value::String("run".to_string()))
+            {
                 for cmd in cmds {
                     if let Value::String(cmd_str) = cmd {
                         commands.push((dep.clone(), cmd_str.clone()));
@@ -96,9 +107,6 @@ pub fn collect_commands_for_dependencies(
     commands
 }
 
-pub fn get_env_cmds(
-    yaml: &Value,
-    env: &String
-)->Vec<(String, String)> {
+pub fn get_env_cmds(yaml: &Value, env: &String) -> Vec<(String, String)> {
     collect_commands_for_dependencies(yaml, &[env.to_string()])
 }

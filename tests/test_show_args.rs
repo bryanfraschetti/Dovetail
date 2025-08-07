@@ -3,7 +3,7 @@ use tempfile::tempdir;
 mod test_helpers;
 use test_helpers::run_dovetail_command;
 
-const SAMPLE_YAML : &str = "
+const SAMPLE_YAML: &str = "
 dev:
   key: value
 

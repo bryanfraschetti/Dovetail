@@ -3,13 +3,13 @@ use tempfile::tempdir;
 mod test_helpers;
 use test_helpers::run_dovetail_command;
 
-const SAMPLE_YAML : &str = "
+const SAMPLE_YAML: &str = "
 dev:
   run:
     - echo Hello World
 ";
 
-const SAMPLE_YAML_DEPENDENCIES : &str = "
+const SAMPLE_YAML_DEPENDENCIES: &str = "
 dev.1:
   run:
     - echo 'Going 1st'
@@ -26,7 +26,6 @@ dev.3:
   run:
     - echo 'Going 3rd'
 ";
-
 
 #[test]
 fn test_run_auto_command() {
@@ -66,7 +65,7 @@ fn test_run_prompt_command() {
 }
 
 #[test]
-fn test_dependency_checker(){
+fn test_dependency_checker() {
     let dir = tempdir().unwrap();
     let yaml_path = dir.path().join("dovetail.yaml");
     write(&yaml_path, SAMPLE_YAML_DEPENDENCIES).unwrap();

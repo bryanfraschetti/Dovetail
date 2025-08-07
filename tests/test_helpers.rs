@@ -1,9 +1,13 @@
-use std::process::Command;
 use std::path::PathBuf;
+use std::process::Command;
 
-pub fn run_dovetail_command(args: &[&str], dir: &tempfile::TempDir) -> std::process::Output {
+pub fn run_dovetail_command(
+    args: &[&str],
+    dir: &tempfile::TempDir,
+) -> std::process::Output {
     let mut binary_path = PathBuf::from("target/debug/dovetail");
-    binary_path = binary_path.canonicalize()
+    binary_path = binary_path
+        .canonicalize()
         .expect("Failed to find dovetail binary. Did you run `cargo build`?");
 
     Command::new(binary_path)

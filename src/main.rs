@@ -1,8 +1,8 @@
-use clap::{arg, Arg, Command};
+use clap::{Arg, Command, arg};
 use serde_yaml::Value;
 use std::fs;
 mod subcmds;
-use subcmds::{show, list, run, release};
+use subcmds::{list, release, run, show};
 
 fn main() {
     let cmd = Command::new("dovetail")
@@ -14,10 +14,7 @@ fn main() {
                 .about("Displays the contents of the dovetail.yaml file or a specific environment")
                 .arg(arg!(<ENVIRONMENT> "The name of the environment").required(false)),
         )
-        .subcommand(
-            Command::new("list")
-                .about("Lists dovetail.yaml environments")
-        )
+        .subcommand(Command::new("list").about("Lists dovetail.yaml environments"))
         .subcommand(
             Command::new("run")
                 .about("Executes the run section of an environment")
@@ -30,7 +27,8 @@ fn main() {
                         .required(false)
                         .action(clap::ArgAction::SetTrue),
                 ),
-        ).subcommand(
+        )
+        .subcommand(
             Command::new("release")
                 .about("Executes the release section of an environment")
                 .arg(arg!(<ENVIRONMENT> "The name of the environment"))
@@ -46,7 +44,7 @@ fn main() {
         );
 
     let matches = cmd.get_matches();
-    
+
     let content = match fs::read_to_string("dovetail.yaml") {
         Ok(c) => c,
         Err(e) => {
@@ -78,7 +76,8 @@ fn main() {
         }
         Some(("release", release_matches)) => {
             let env = release_matches.get_one::<String>("ENVIRONMENT").unwrap();
-            let platform = release_matches.get_one::<String>("PLATFORM").unwrap();
+            let platform =
+                release_matches.get_one::<String>("PLATFORM").unwrap();
             let skip_prompt = release_matches.get_flag("yes");
             release::release(&yaml, env, platform, skip_prompt);
         }
