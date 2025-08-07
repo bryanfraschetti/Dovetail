@@ -34,9 +34,10 @@ pub fn release(
     // that won't be supported
     let dependency_commands =
         helpers::collect_commands_for_dependencies(yaml, &direct_dependencies);
+    let env_vars = helpers::get_env_vars(yaml, environment);
     let env_commands = helpers::get_env_cmds(platform_map, platform);
 
     // Execute commands
-    helpers::execute(dependency_commands, skip_prompt);
-    helpers::execute(env_commands, skip_prompt);
+    helpers::execute(dependency_commands, &env_vars, skip_prompt);
+    helpers::execute(env_commands, &env_vars, skip_prompt);
 }

@@ -1,10 +1,15 @@
 use colored::*;
 use serde_yaml::Value;
+use std::collections::HashMap;
 use std::collections::HashSet;
 use std::io::{self, Write};
 use std::process;
 
-pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool) {
+pub fn execute(
+    commands: Vec<(String, String)>,
+    env_vars: &HashMap<String, String>,
+    skip_prompt: bool,
+) {
     if commands.is_empty() {
         // eprintln!("No commands to run.");
         return;
@@ -29,7 +34,12 @@ pub fn execute(commands: Vec<(String, String)>, skip_prompt: bool) {
 
     for (env, cmd) in commands {
         println!("\n{}: {}", env.green(), cmd);
-        let status = process::Command::new("bash").arg("-c").arg(&cmd).status();
+        let status = process::Command::new("bash")
+            .arg("-c")
+            .arg(&cmd)
+            .envs(env_vars)
+            .status();
+
         println!();
         match status {
             Ok(s) if s.success() => {}
@@ -101,6 +111,23 @@ pub fn collect_commands_for_dependencies(
     }
 
     commands
+}
+
+pub fn get_env_vars(yaml: &Value, env: &str) -> HashMap<String, String> {
+    let mut result = HashMap::new();
+
+    if let Some(env_section) = yaml.get(env)
+        && let Some(env_vars) = env_section.get("env")
+        && let Some(mapping) = env_vars.as_mapping()
+    {
+        for (key, value) in mapping {
+            if let (Some(k), Some(v)) = (key.as_str(), value.as_str()) {
+                result.insert(k.to_string(), v.to_string());
+            }
+        }
+    }
+
+    result
 }
 
 pub fn get_env_cmds(yaml: &Value, env: &String) -> Vec<(String, String)> {
