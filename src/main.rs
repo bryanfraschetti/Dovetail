@@ -50,7 +50,7 @@ fn main() {
     let content = match fs::read_to_string("dovetail.yaml") {
         Ok(c) => c,
         Err(e) => {
-            eprintln!("Failed to read dovetail.yaml: {}", e);
+            eprintln!("Failed to read dovetail.yaml: {e}");
             std::process::exit(1);
         }
     };
@@ -58,7 +58,7 @@ fn main() {
     let yaml: Value = match serde_yaml::from_str(&content) {
         Ok(y) => y,
         Err(e) => {
-            eprintln!("Failed to parse YAML: {}", e);
+            eprintln!("Failed to parse YAML: {e}");
             std::process::exit(1);
         }
     };

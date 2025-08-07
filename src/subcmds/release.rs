@@ -12,7 +12,7 @@ pub fn release(yaml: &Value, environment: &String, platform: &String, skip_promp
     let platform_map = match env_map {
         Some(map) => map,
         None => {
-            eprintln!("Platform '{}' not found in release section of environment '{}'.", platform, environment);
+            eprintln!("Platform '{platform}' not found in release section of environment '{environment}'.");
             return;
         }
     };
