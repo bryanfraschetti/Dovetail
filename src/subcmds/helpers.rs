@@ -1,7 +1,6 @@
 use colored::*;
 use serde_yaml::Value;
 use std::collections::HashMap;
-use std::collections::HashSet;
 use std::io::{self, Write};
 use std::process;
 
@@ -61,58 +60,6 @@ pub fn execute(
     }
 }
 
-pub fn collect_dependencies(
-    yaml: &Value,
-    environment: &String,
-    visited: &mut HashSet<String>,
-) -> Vec<String> {
-    if visited.contains(environment) {
-        return vec![];
-    }
-
-    visited.insert(environment.clone());
-    let mut ordered_dependencies = Vec::new();
-
-    if let Value::Mapping(map) = &yaml[environment]
-        && let Some(Value::Sequence(depends)) =
-            map.get(Value::String("depends".to_string()))
-    {
-        for dep in depends {
-            if let Value::String(dep_env) = dep
-                && !visited.contains(dep_env)
-            {
-                ordered_dependencies
-                    .extend(collect_dependencies(yaml, dep_env, visited));
-                ordered_dependencies.push(dep_env.clone());
-            }
-        }
-    }
-    ordered_dependencies
-}
-
-// Collects commands for a list of dependencies
-pub fn collect_commands_for_dependencies(
-    yaml: &Value,
-    dependencies: &[String],
-) -> Vec<(String, String)> {
-    let mut commands = Vec::new();
-
-    for dep in dependencies {
-        if let Value::Mapping(map) = &yaml[dep]
-            && let Some(Value::Sequence(cmds)) =
-                map.get(Value::String("run".to_string()))
-        {
-            for cmd in cmds {
-                if let Value::String(cmd_str) = cmd {
-                    commands.push((dep.clone(), cmd_str.clone()));
-                }
-            }
-        }
-    }
-
-    commands
-}
-
 pub fn get_env_vars(yaml: &Value, env: &str) -> HashMap<String, String> {
     let mut result = HashMap::new();
 
@@ -131,5 +78,18 @@ pub fn get_env_vars(yaml: &Value, env: &str) -> HashMap<String, String> {
 }
 
 pub fn get_env_cmds(yaml: &Value, env: &String) -> Vec<(String, String)> {
-    collect_commands_for_dependencies(yaml, &[env.to_string()])
+    let mut commands = Vec::new();
+
+    if let Value::Mapping(map) = &yaml[env]
+        && let Some(Value::Sequence(cmds)) =
+            map.get(Value::String("run".to_string()))
+    {
+        for cmd in cmds {
+            if let Value::String(cmd_str) = cmd {
+                commands.push((env.clone(), cmd_str.clone()));
+            }
+        }
+    }
+
+    commands
 }

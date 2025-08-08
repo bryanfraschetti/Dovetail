@@ -52,23 +52,3 @@ install:
     # Doesn't work if which dovetail == /snap/bin/dovetail since the
     # snap would be running this process
     - snap install dovetail*snap --dangerous
-
-quick:
-  env:
-    key1: "hi"
-  run:
-    - echo $key1
-  depends:
-    - quick2
-
-quick2:
-  env:
-    key1: "hello"
-  run:
-    - echo $key1
-  depends:
-    - quick3
-
-quick3:
-  run:
-    - echo $key1
