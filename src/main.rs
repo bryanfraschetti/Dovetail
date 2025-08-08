@@ -64,10 +64,10 @@ fn main() {
     match matches.subcommand() {
         Some(("show", show_matches)) => {
             let env = show_matches.get_one::<String>("ENVIRONMENT");
-            show::run(&yaml, env);
+            show::show(&yaml, env);
         }
         Some(("list", _)) => {
-            list::run(&yaml);
+            list::list(&yaml);
         }
         Some(("run", run_matches)) => {
             let env = run_matches.get_one::<String>("ENVIRONMENT").unwrap();

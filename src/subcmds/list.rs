@@ -2,7 +2,7 @@
 use colored::*;
 use serde_yaml::Value;
 
-pub fn run(yaml: &Value) {
+pub fn list(yaml: &Value) {
     match &yaml {
         Value::Mapping(map) => {
             println!("Environments:");

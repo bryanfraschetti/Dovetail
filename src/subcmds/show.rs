@@ -3,7 +3,7 @@ use serde_yaml::Value;
 use std::fs;
 use std::process;
 
-pub fn run(yaml: &Value, environment: Option<&String>) {
+pub fn show(yaml: &Value, environment: Option<&String>) {
     if let Some(env) = environment {
         match &yaml[env] {
             Value::Null => eprintln!("Environment '{env}' not found."),
