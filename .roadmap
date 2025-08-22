@@ -5,6 +5,5 @@ Features to add:
   - Add rust linting
   - Add environment variables
   - Add color coded output / improve it generally
-  - Maybe add a clean command
   - Maybe add a setup command which searches for a setup environment. This could be used to for example install the project dependencies / stuff for tests
   - Opposite of depends. A post directive which runs another environment after the current

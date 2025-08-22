@@ -29,6 +29,28 @@ fn main() {
                 ),
         )
         .subcommand(
+            Command::new("clean")
+                .about("Alias for `run clean`. Executes the clean environment")
+                .arg(
+                    Arg::new("yes")
+                        .short('y')
+                        .long("yes")
+                        .help("Skip confirmation prompt")
+                        .action(clap::ArgAction::SetTrue),
+                )
+        )
+        .subcommand(
+            Command::new("setup")
+                .about("Alias for `run setup`. Executes the setup environment")
+                .arg(
+                    Arg::new("yes")
+                        .short('y')
+                        .long("yes")
+                        .help("Skip confirmation prompt")
+                        .action(clap::ArgAction::SetTrue),
+                )
+        )
+        .subcommand(
             Command::new("release")
                 .about("Executes the release section of an environment")
                 .arg(arg!(<ENVIRONMENT> "The name of the environment"))
@@ -41,17 +63,6 @@ fn main() {
                         .required(false)
                         .action(clap::ArgAction::SetTrue),
                 ),
-        )
-        .subcommand(
-            Command::new("clean")
-                .about("Alias for `run clean`. Executes the clean environment")
-                .arg(
-                    Arg::new("yes")
-                        .short('y')
-                        .long("yes")
-                        .help("Skip confirmation prompt")
-                        .action(clap::ArgAction::SetTrue),
-                )
         );
 
     let matches = cmd.get_matches();
@@ -88,6 +99,10 @@ fn main() {
         Some(("clean", clean_matches)) => {
             let skip_prompt = clean_matches.get_flag("yes");
             run::run(&yaml, &"clean".to_string(), skip_prompt);
+        }
+        Some(("setup", setup_matches)) => {
+            let skip_prompt = setup_matches.get_flag("yes");
+            run::run(&yaml, &"setup".to_string(), skip_prompt);
         }
         Some(("release", release_matches)) => {
             let env = release_matches.get_one::<String>("ENVIRONMENT").unwrap();
