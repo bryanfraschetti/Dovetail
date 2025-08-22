@@ -24,9 +24,11 @@ dev:
         - git push --force
 
     snap:
+      depends:
+        - dev.test
       run:
-        - snapcraft
-    
+        - snapcraft pack
+
     debian.point-release:
       run:
         - debclean
