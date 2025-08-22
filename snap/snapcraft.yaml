@@ -15,4 +15,7 @@ parts:
   dovetail:
     plugin: rust
     source: .
-
+    build-environment:
+      - RUSTFLAGS: >
+          -C link-args=-Wl,-dynamic-linker=/snap/core24/current/lib64/ld-linux-x86-64.so.2
+          -C link-args=-Wl,-rpath=/snap/core24/current/lib/x86_64-linux-gnu
