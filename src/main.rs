@@ -41,6 +41,17 @@ fn main() {
                         .required(false)
                         .action(clap::ArgAction::SetTrue),
                 ),
+        )
+        .subcommand(
+            Command::new("clean")
+                .about("Alias for `run clean`. Executes the clean environment")
+                .arg(
+                    Arg::new("yes")
+                        .short('y')
+                        .long("yes")
+                        .help("Skip confirmation prompt")
+                        .action(clap::ArgAction::SetTrue),
+                )
         );
 
     let matches = cmd.get_matches();
@@ -73,6 +84,10 @@ fn main() {
             let env = run_matches.get_one::<String>("ENVIRONMENT").unwrap();
             let skip_prompt = run_matches.get_flag("yes");
             run::run(&yaml, env, skip_prompt);
+        }
+        Some(("clean", clean_matches)) => {
+            let skip_prompt = clean_matches.get_flag("yes");
+            run::run(&yaml, &"clean".to_string(), skip_prompt);
         }
         Some(("release", release_matches)) => {
             let env = release_matches.get_one::<String>("ENVIRONMENT").unwrap();
